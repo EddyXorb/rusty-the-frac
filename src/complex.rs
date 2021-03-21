@@ -3,14 +3,19 @@ use std::{
     ops::{Add, Mul},
 };
 
+#[derive(Copy, Clone)]
 pub struct Cx {
-    pub r: i64,
-    pub i: i64,
+    pub r: f64,
+    pub i: f64,
 }
 
 impl Cx {
-    pub fn new(r: i64, i: i64) -> Self {
+    pub fn new(r: f64, i: f64) -> Self {
         Self { r, i }
+    }
+
+    pub fn abs(self) -> f64 {
+        self.r * self.r + self.i * self.i
     }
 }
 
