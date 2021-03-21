@@ -1,27 +1,9 @@
-use std::ops::Add;
-
-struct Cx {
-    r: i64,
-    i: i64,
-}
-
-impl Add for Cx {
-    type Output = Cx;
-
-    fn add(self, rhs: Cx) -> Self::Output {
-        Cx {
-            r: self.r + rhs.r,
-            i: self.i + rhs.i,
-        }
-    }
-}
-
-impl Cx {
-    fn new(r: i64, i: i64) -> Self {
-        Self { r, i }
-    }
-}
+mod complex;
 
 fn main() {
-    println!("Hello, world!");
+    let a = complex::Cx::new(1, 1);
+    let b = complex::Cx::new(2, 2);
+    let c = a * b;
+
+    println!("{}", c);
 }
