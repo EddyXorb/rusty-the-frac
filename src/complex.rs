@@ -1,6 +1,6 @@
 use std::{
     fmt::Display,
-    ops::{Add, Mul},
+    ops::{Add, Mul, Sub},
 };
 
 #[derive(Copy, Clone)]
@@ -48,6 +48,16 @@ impl Mul<usize> for Cx {
         Cx {
             r: self.r * (rhs as f64),
             i: self.i * (rhs as f64),
+        }
+    }
+}
+
+impl Sub<Cx> for Cx {
+    type Output = Cx;
+    fn sub(self, rhs: Cx) -> Self::Output {
+        Cx {
+            r: self.r - rhs.r,
+            i: self.i - rhs.i,
         }
     }
 }
