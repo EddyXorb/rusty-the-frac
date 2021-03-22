@@ -1,4 +1,4 @@
-use druid::kurbo::BezPath;
+
 use druid::piet::{FontFamily, ImageFormat, InterpolationMode, Text, TextLayoutBuilder};
 use druid::widget::prelude::*;
 use druid::{
@@ -6,30 +6,46 @@ use druid::{
     WindowDesc,
 };
 
-struct CustomWidget;
+use crate::mandelbrotimage::MandelbrotImage;
+
+struct MandelbrotWidget;
 
 // If this widget has any child widgets it should call its event, update and layout
 // (and lifecycle) methods as well to make sure it works. Some things can be filtered,
 // but a general rule is to just pass it through unless you really know you don't want it.
-impl Widget<String> for CustomWidget {
-    fn event(&mut self, _ctx: &mut EventCtx, _event: &Event, _data: &mut String, _env: &Env) {}
+impl Widget<MandelbrotImage> for MandelbrotWidget {
+    fn event(
+        &mut self,
+        _ctx: &mut EventCtx,
+        _event: &Event,
+        _data: &mut MandelbrotImage,
+        _env: &Env,
+    ) {
+    }
 
     fn lifecycle(
         &mut self,
         _ctx: &mut LifeCycleCtx,
         _event: &LifeCycle,
-        _data: &String,
+        _data: &MandelbrotImage,
         _env: &Env,
     ) {
     }
 
-    fn update(&mut self, _ctx: &mut UpdateCtx, _old_data: &String, _data: &String, _env: &Env) {}
+    fn update(
+        &mut self,
+        _ctx: &mut UpdateCtx,
+        _old_data: &MandelbrotImage,
+        _data: &MandelbrotImage,
+        _env: &Env,
+    ) {
+    }
 
     fn layout(
         &mut self,
         _layout_ctx: &mut LayoutCtx,
         bc: &BoxConstraints,
-        _data: &String,
+        _data: &MandelbrotImage,
         _env: &Env,
     ) -> Size {
         // BoxConstraints are passed by the parent widget.
@@ -54,19 +70,23 @@ impl Widget<String> for CustomWidget {
     // The paint method gets called last, after an event flow.
     // It goes event -> update -> layout -> paint, and each method can influence the next.
     // Basically, anything that changes the appearance of a widget causes a paint.
-    fn paint(&mut self, ctx: &mut PaintCtx, data: &String, env: &Env) {
+    fn paint(&mut self, ctx: &mut PaintCtx, data: &MandelbrotImage, _env: &Env) {
         // Clear the whole widget with the color of your choice
         // (ctx.size() returns the size of the layout rect we're painting in)
         // Note: ctx also has a `clear` method, but that clears the whole context,
         // and we only want to clear this widget's area.
         let size = ctx.size();
-        // let rect = size.to_rect();
-        // ctx.fill(rect, &Color::WHITE);
+        let rect = size.to_rect();
+        ctx.fill(rect, &Color::WHITE);
 
         // Let's burn some CPU to make a (partially transparent) image buffer
-        let image_data = make_image_data(512, 256);
         let image = ctx
-            .make_image(512, 256, &image_data, ImageFormat::RgbaSeparate)
+            .make_image(
+                data.width,
+                data.height,
+                &data.rgba,
+                ImageFormat::RgbaSeparate,
+            )
             .unwrap();
         // The image is automatically scaled to fit the rect you pass to draw_image
         ctx.draw_image(&image, size.to_rect(), InterpolationMode::Bilinear);
@@ -81,11 +101,12 @@ impl Widget<String> for CustomWidget {
     }
 }
 
-pub fn start_widget() {
+pub fn start_widget(startImage: MandelbrotImage) {
     //mandelbrot: Vec<u8>, width: usize, height: usize) {
-    let window = WindowDesc::new(|| CustomWidget).title(LocalizedString::new("Mandelbrot-Set"));
+    let window = WindowDesc::new(|| -> MandelbrotWidget { MandelbrotWidget })
+        .title(LocalizedString::new("Mandelbrot-Set"));
     AppLauncher::with_window(window)
-        .launch("Druid + Piet".to_string())
+        .launch(startImage)
         .expect("launch failed");
 }
 
