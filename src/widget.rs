@@ -5,19 +5,19 @@ use druid::{
     WindowDesc,
 };
 
-use crate::mandelbrotimage::MandelbrotImage;
+use crate::RawImage;
 
 struct MandelbrotWidget;
 
 // If this widget has any child widgets it should call its event, update and layout
 // (and lifecycle) methods as well to make sure it works. Some things can be filtered,
 // but a general rule is to just pass it through unless you really know you don't want it.
-impl Widget<MandelbrotImage> for MandelbrotWidget {
+impl Widget<RawImage> for MandelbrotWidget {
     fn event(
         &mut self,
         _ctx: &mut EventCtx<'_, '_>,
         _event: &Event,
-        _data: &mut MandelbrotImage,
+        _data: &mut RawImage,
         _env: &Env,
     ) {
     }
@@ -26,7 +26,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
         &mut self,
         _ctx: &mut LifeCycleCtx<'_, '_>,
         _event: &LifeCycle,
-        _data: &MandelbrotImage,
+        _data: &RawImage,
         _env: &Env,
     ) {
     }
@@ -34,8 +34,8 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
     fn update(
         &mut self,
         _ctx: &mut UpdateCtx<'_, '_>,
-        _old_data: &MandelbrotImage,
-        _data: &MandelbrotImage,
+        _old_data: &RawImage,
+        _data: &RawImage,
         _env: &Env,
     ) {
     }
@@ -44,7 +44,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
         &mut self,
         _layout_ctx: &mut LayoutCtx<'_, '_>,
         bc: &BoxConstraints,
-        _data: &MandelbrotImage,
+        _data: &RawImage,
         _env: &Env,
     ) -> Size {
         // BoxConstraints are passed by the parent widget.
@@ -69,7 +69,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
     // The paint method gets called last, after an event flow.
     // It goes event -> update -> layout -> paint, and each method can influence the next.
     // Basically, anything that changes the appearance of a widget causes a paint.
-    fn paint(&mut self, ctx: &mut PaintCtx<'_, '_, '_>, data: &MandelbrotImage, _env: &Env) {
+    fn paint(&mut self, ctx: &mut PaintCtx<'_, '_, '_>, data: &RawImage, _env: &Env) {
         // Clear the whole widget with the color of your choice
         // (ctx.size() returns the size of the layout rect we're painting in)
         // Note: ctx also has a `clear` method, but that clears the whole context,
@@ -81,9 +81,9 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
         // Let's burn some CPU to make a (partially transparent) image buffer
         let image = ctx
             .make_image(
-                data.width,
-                data.height,
-                &data.rgba,
+                *data.width(),
+                *data.height(),
+                data.rgba(),
                 ImageFormat::RgbaSeparate,
             )
             .unwrap();
@@ -100,7 +100,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
     }
 }
 
-pub fn start_widget(startImage: MandelbrotImage) {
+pub fn start_widget(startImage: RawImage) {
     //mandelbrot: Vec<u8>, width: usize, height: usize) {
     let window = WindowDesc::new(|| -> MandelbrotWidget { MandelbrotWidget })
         .title(LocalizedString::new("Mandelbrot-Set"));

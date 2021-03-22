@@ -1,8 +1,15 @@
-use mandelbrotimage::MandelbrotImage;
+use complex::Cx;
+use imagecreator::ImageCreator;
+use rawimage::RawImage;
+use screencoordinates::ScreenCoordinates;
+use widget::start_widget;
 
 mod complex;
-mod mandelbrotimage;
+mod imagecreator;
 mod mandelbrottest;
+mod rawimage;
+mod screencoordinates;
+mod transformer;
 mod widget;
 
 fn make_image_data(width: usize, height: usize) -> Vec<u8> {
@@ -20,23 +27,12 @@ fn make_image_data(width: usize, height: usize) -> Vec<u8> {
 }
 
 fn main() {
-    let width = 124;
-    let height = 124;
-    let data = MandelbrotImage {
-        rgba: make_image_data(width, height),
-        width,
-        height,
-    };
-    widget::start_widget(data);
+    let image = ImageCreator::new(
+        ScreenCoordinates { x: 512, y: 512 },
+        Cx { r: 0.0, i: 0.0 },
+        Cx { r: 2.0, i: 2.0 },
+    )
+    .createImage();
 
-    let a = complex::Cx::new(1.0, 1.0);
-    let b = complex::Cx::new(0.0, 10.0);
-    let c = a * b;
-
-    println!("{}", c);
-    println!(
-        "{} is in set? {}",
-        c,
-        mandelbrottest::is_in_mandelbrot_set(c)
-    );
+    start_widget(image);
 }

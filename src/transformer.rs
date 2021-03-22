@@ -1,48 +1,21 @@
 use crate::complex::Cx;
-use std::ops::{Mul, Sub};
+use crate::screencoordinates::ScreenCoordinates;
 
-#[derive(Copy, Clone)]
-pub struct ScreenCoordinates {
-    pub x: usize,
-    pub y: usize,
-}
-
-impl Mul<f64> for ScreenCoordinates {
-    type Output = ScreenCoordinates;
-
-    fn mul(self, rhs: f64) -> ScreenCoordinates {
-        ScreenCoordinates {
-            x: self.x * rhs as usize,
-            y: self.y * rhs as usize,
-        }
-    }
-}
-
-impl Sub for ScreenCoordinates {
-    type Output = ScreenCoordinates;
-
-    fn sub(self, rhs: ScreenCoordinates) -> Self::Output {
-        ScreenCoordinates {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-        }
-    }
-}
-pub struct CxToScreenConverter {
+pub struct Transformer {
     max: ScreenCoordinates,
     center: ScreenCoordinates,
     cx_max: Cx,
     cx_center: Cx,
 }
 
-impl CxToScreenConverter {
-    pub fn new(max: ScreenCoordinates, cx_max: Cx, cx_center: Cx) {
-        CxToScreenConverter {
+impl Transformer {
+    pub fn new(max: ScreenCoordinates, cx_max: Cx, cx_center: Cx) -> Transformer {
+        Transformer {
             max,
             center: max * 0.5,
             cx_max,
             cx_center,
-        };
+        }
     }
 
     pub fn toScreen(self, c: Cx) -> ScreenCoordinates {
@@ -53,7 +26,7 @@ impl CxToScreenConverter {
         ScreenCoordinates { x, y }
     }
 
-    pub fn toCx(self, s: ScreenCoordinates) -> Cx {
+    pub fn toCx(&self, s: ScreenCoordinates) -> Cx {
         let diff = s - self.center;
         let dx = diff.x as f64;
         let dy = diff.y as f64;
