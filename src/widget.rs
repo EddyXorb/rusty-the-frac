@@ -1,4 +1,3 @@
-
 use druid::piet::{FontFamily, ImageFormat, InterpolationMode, Text, TextLayoutBuilder};
 use druid::widget::prelude::*;
 use druid::{
@@ -16,7 +15,7 @@ struct MandelbrotWidget;
 impl Widget<MandelbrotImage> for MandelbrotWidget {
     fn event(
         &mut self,
-        _ctx: &mut EventCtx,
+        _ctx: &mut EventCtx<'_, '_>,
         _event: &Event,
         _data: &mut MandelbrotImage,
         _env: &Env,
@@ -25,7 +24,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
 
     fn lifecycle(
         &mut self,
-        _ctx: &mut LifeCycleCtx,
+        _ctx: &mut LifeCycleCtx<'_, '_>,
         _event: &LifeCycle,
         _data: &MandelbrotImage,
         _env: &Env,
@@ -34,7 +33,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
 
     fn update(
         &mut self,
-        _ctx: &mut UpdateCtx,
+        _ctx: &mut UpdateCtx<'_, '_>,
         _old_data: &MandelbrotImage,
         _data: &MandelbrotImage,
         _env: &Env,
@@ -43,7 +42,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
 
     fn layout(
         &mut self,
-        _layout_ctx: &mut LayoutCtx,
+        _layout_ctx: &mut LayoutCtx<'_, '_>,
         bc: &BoxConstraints,
         _data: &MandelbrotImage,
         _env: &Env,
@@ -70,7 +69,7 @@ impl Widget<MandelbrotImage> for MandelbrotWidget {
     // The paint method gets called last, after an event flow.
     // It goes event -> update -> layout -> paint, and each method can influence the next.
     // Basically, anything that changes the appearance of a widget causes a paint.
-    fn paint(&mut self, ctx: &mut PaintCtx, data: &MandelbrotImage, _env: &Env) {
+    fn paint(&mut self, ctx: &mut PaintCtx<'_, '_, '_>, data: &MandelbrotImage, _env: &Env) {
         // Clear the whole widget with the color of your choice
         // (ctx.size() returns the size of the layout rect we're painting in)
         // Note: ctx also has a `clear` method, but that clears the whole context,
