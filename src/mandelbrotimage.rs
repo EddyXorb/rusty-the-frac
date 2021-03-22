@@ -13,3 +13,9 @@ impl Data for MandelbrotImage {
         self.height == other.height && self.width == other.width && ptr::eq(&self.rgba, &other.rgba)
     }
 }
+
+impl MandelbrotImage {
+    pub fn xyToVecIndex(self, x: usize, y: usize) -> usize {
+        y * self.width + x
+    }
+}
