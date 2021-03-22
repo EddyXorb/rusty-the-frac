@@ -30,15 +30,24 @@ impl Add for Cx {
     }
 }
 
-impl Mul for Cx {
+impl Mul<Cx> for Cx {
     type Output = Cx;
-
     fn mul(self, rhs: Cx) -> Self::Output {
         {
             Cx {
                 r: self.r * rhs.r - self.i * rhs.i,
                 i: self.r * rhs.i + self.i * rhs.r,
             }
+        }
+    }
+}
+
+impl Mul<usize> for Cx {
+    type Output = Cx;
+    fn mul(self, rhs: usize) -> Self::Output {
+        Cx {
+            r: self.r * (rhs as f64),
+            i: self.i * (rhs as f64),
         }
     }
 }
