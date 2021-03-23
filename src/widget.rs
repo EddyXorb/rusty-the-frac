@@ -1,9 +1,6 @@
-use druid::piet::{FontFamily, ImageFormat, InterpolationMode, Text, TextLayoutBuilder};
+use druid::piet::{ImageFormat, InterpolationMode};
 use druid::widget::prelude::*;
-use druid::{
-    Affine, AppLauncher, Color, FontDescriptor, LocalizedString, Point, Rect, TextLayout,
-    WindowDesc,
-};
+use druid::{AppLauncher, Color, LocalizedString, WindowDesc};
 
 use crate::RawImage;
 
@@ -100,25 +97,11 @@ impl Widget<RawImage> for MandelbrotWidget {
     }
 }
 
-pub fn start_widget(startImage: RawImage) {
+pub fn start_widget(start_image: RawImage) {
     //mandelbrot: Vec<u8>, width: usize, height: usize) {
     let window = WindowDesc::new(|| -> MandelbrotWidget { MandelbrotWidget })
         .title(LocalizedString::new("Mandelbrot-Set"));
     AppLauncher::with_window(window)
-        .launch(startImage)
+        .launch(start_image)
         .expect("launch failed");
-}
-
-fn make_image_data(width: usize, height: usize) -> Vec<u8> {
-    let mut result = vec![0; width * height * 4];
-    for y in 0..height {
-        for x in 0..width {
-            let ix = (y * width + x) * 4;
-            result[ix] = x as u8;
-            result[ix + 1] = y as u8;
-            result[ix + 2] = !(x as u8);
-            result[ix + 3] = 200;
-        }
-    }
-    result
 }

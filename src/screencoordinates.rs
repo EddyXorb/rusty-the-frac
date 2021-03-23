@@ -1,5 +1,7 @@
-use crate::complex::Cx;
-use std::ops::{Mul, Sub};
+use std::{
+    fmt::Display,
+    ops::{Mul, Sub},
+};
 
 #[derive(Copy, Clone)]
 pub struct ScreenCoordinates {
@@ -26,5 +28,11 @@ impl Sub for ScreenCoordinates {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
+    }
+}
+
+impl Display for ScreenCoordinates {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({},{})", self.x, self.y)
     }
 }

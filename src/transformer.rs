@@ -18,20 +18,20 @@ impl Transformer {
         }
     }
 
-    pub fn toScreen(self, c: Cx) -> ScreenCoordinates {
+    pub fn to_screen(self, c: Cx) -> ScreenCoordinates {
         let centered_c = c - self.cx_center;
-        let x = ((centered_c.r / self.cx_max.r) * (self.center.x as f64)) as usize + self.center.x;
-        let y = ((centered_c.i / self.cx_max.i) * (self.center.y as f64)) as usize + self.center.y;
+        let x = ((centered_c.r / self.cx_max.r) * (self.max.x as f64)) as usize + self.center.x;
+        let y = ((centered_c.i / self.cx_max.i) * (self.max.y as f64)) as usize + self.center.y;
 
         ScreenCoordinates { x, y }
     }
 
-    pub fn toCx(&self, s: ScreenCoordinates) -> Cx {
+    pub fn to_cx(&self, s: ScreenCoordinates) -> Cx {
         let diff = s - self.center;
         let dx = diff.x as f64;
         let dy = diff.y as f64;
-        let r = self.cx_max.r * dx / (self.center.x as f64) + self.cx_center.r;
-        let i = self.cx_max.i * dy / (self.center.y as f64) + self.cx_center.i;
+        let r = self.cx_max.r * dx / (self.max.x as f64) + self.cx_center.r;
+        let i = self.cx_max.i * dy / (self.max.y as f64) + self.cx_center.i;
 
         Cx { r, i }
     }

@@ -9,7 +9,7 @@ pub fn is_in_mandelbrot_set(c: complex::Cx, max_count: u8) -> MandelbrotTestResu
     let mut counter: u8 = 0;
     let mut z = complex::Cx::new(0.0, 0.0);
 
-    while z.abs() < 4.0 && counter < max_count {
+    while z.abs() < 20.0 && counter < max_count {
         z = (z * z) + c;
         counter += 1;
     }
