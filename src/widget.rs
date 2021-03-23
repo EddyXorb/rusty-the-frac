@@ -78,8 +78,8 @@ impl Widget<RawImage> for MandelbrotWidget {
         // Let's burn some CPU to make a (partially transparent) image buffer
         let image = ctx
             .make_image(
-                *data.width(),
-                *data.height(),
+                data.width(),
+                data.height(),
                 data.rgba(),
                 ImageFormat::RgbaSeparate,
             )

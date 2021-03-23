@@ -25,7 +25,7 @@ impl ImageCreator {
             for y in 0..self.screensize.y {
                 let coords = ScreenCoordinates { x, y };
                 let cx_coords = converter.to_cx(coords);
-                //println! {"coords {} -> cx {}", coords, cx_coords};
+                println! {"coords {} -> cx {}", coords, cx_coords};
                 let result = mandelbrottest::is_in_mandelbrot_set(cx_coords, 100);
                 let rgba = RGBA {
                     r: result.iterations,

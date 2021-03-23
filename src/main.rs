@@ -14,7 +14,7 @@ mod widget;
 
 fn main() {
     let image = ImageCreator::new(
-        ScreenCoordinates { x: 10, y: 10 },
+        ScreenCoordinates { x: 30, y: 30 },
         Cx { r: 0.0, i: 0.0 },
         Cx { r: 1.0, i: 1.0 },
     )

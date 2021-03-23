@@ -5,8 +5,8 @@ use std::{
 
 #[derive(Copy, Clone)]
 pub struct ScreenCoordinates {
-    pub x: usize,
-    pub y: usize,
+    pub x: i32,
+    pub y: i32,
 }
 
 impl Mul<f64> for ScreenCoordinates {
@@ -14,8 +14,8 @@ impl Mul<f64> for ScreenCoordinates {
 
     fn mul(self, rhs: f64) -> ScreenCoordinates {
         ScreenCoordinates {
-            x: self.x * rhs as usize,
-            y: self.y * rhs as usize,
+            x: self.x * rhs as i32,
+            y: self.y * rhs as i32,
         }
     }
 }
