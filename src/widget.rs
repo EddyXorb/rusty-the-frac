@@ -75,6 +75,7 @@ impl Widget<RawImage> for MandelbrotWidget {
         let rect = size.to_rect();
         ctx.fill(rect, &Color::WHITE);
 
+        println!("h{},w{},size{}", data.height(), data.width(),data.rgba().len());
         // Let's burn some CPU to make a (partially transparent) image buffer
         let image = ctx
             .make_image(
@@ -85,7 +86,7 @@ impl Widget<RawImage> for MandelbrotWidget {
             )
             .unwrap();
         // The image is automatically scaled to fit the rect you pass to draw_image
-        ctx.draw_image(&image, size.to_rect(), InterpolationMode::Bilinear);
+        ctx.draw_image(&image, rect, InterpolationMode::Bilinear);
     }
 
     fn id(&self) -> Option<WidgetId> {
